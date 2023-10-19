@@ -25,6 +25,7 @@ public class Inspector
 
         if(methodObjects.length > 0)
         {
+            System.out.println("----------------------START OF METHODS-----------------------------------------------------");
             for(Method methods : methodObjects)
             {
                 System.out.println("---------------------------------------------------------------------------");
@@ -58,11 +59,12 @@ public class Inspector
                     } 
                 System.out.println("Method Modifier: " + methods.getModifiers() + "\n");
             }
-            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("-----------------------END OF METHODS----------------------------------------------------");
         }
 
         if(constructorObject.length > 0)
         {
+            System.out.println("---------------------START OF CONSTRUCTORS------------------------------------------------------");
             for(Constructor<?> constructors : constructorObject)
             {
                  System.out.println("---------------------------------------------------------------------------");
@@ -82,11 +84,12 @@ public class Inspector
                 }
                 System.out.println("Constructor Modifiers: " + constructors.getModifiers() + "\n");
             }
-             System.out.println("---------------------------------------------------------------------------");
+             System.out.println("-----------------------END OF CONSTRUCTORS----------------------------------------------------");
         }
 
         if(fieldObject.length > 0)
         {
+            System.out.println("--------------------------START OF FIELDS-------------------------------------------------");
             for(Field fields : fieldObject)
             {
                 Class<?> fieldType = fields.getType();
@@ -103,7 +106,7 @@ public class Inspector
                     System.out.println("Field Type: " + fieldType.getName() + "\n");
                 }    
                 /* NOT RIGHT NEED TO FIX ----------------------------------------------------------------------------------------------------------------------------- */
-                if(!fieldType.isPrimitive())
+                if(!fieldType.isPrimitive() && !recursive)
                 {
                     System.out.println("Field Value: " + fields.getName() + fields.hashCode());
                 }
@@ -113,6 +116,13 @@ public class Inspector
                     Object value = fields.get(obj);
                     System.out.println("Field Value: " + value);
                 }
+
+                if(!fieldType.isPrimitive() && recursive)
+                {
+                     if(fields.get(obj) != null)
+                     inspect(fields.get(obj), recursive);
+                }
+                
             }
         }
     }
