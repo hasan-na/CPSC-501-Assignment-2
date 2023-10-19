@@ -120,7 +120,10 @@ public class Inspector
                 if(!fieldType.isPrimitive() && recursive)
                 {
                      if(fields.get(obj) != null)
-                     inspect(fields.get(obj), recursive);
+                     {
+                        System.out.println("--------------------------END OF FIELDS-------------------------------------------------");
+                        inspect(fields.get(obj), recursive);
+                     }
                 }
                 
             }
