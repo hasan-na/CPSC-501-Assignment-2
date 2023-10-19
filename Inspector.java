@@ -6,6 +6,7 @@ public class Inspector
 
     public void inspect(Object obj, boolean recursive) throws IllegalArgumentException, IllegalAccessException 
     {
+        //Instantiate my objects to use reflection
         Class<?> classObject = obj.getClass();
         Class<?> superClass = classObject.getSuperclass();
         Class<?>[] interfaceClass = classObject.getInterfaces();
@@ -13,17 +14,35 @@ public class Inspector
         Method[] methodObjects = classObject.getDeclaredMethods();
         Field[] fieldObject = classObject.getDeclaredFields();
         
-        System.out.println("Class: " + classObject.getName() + "\n");
+        //Print the class name and immediate superclass name
+        System.out.println("Class: " + classObject.getName() + "\n");  
         System.out.println("Superclass: " + superClass.getName() + "\n");
+       //Check if interaces are being imeplemented
+        interface_info(interfaceClass);
+        //get method information
+        method_info(methodObjects);
+        //get constrcutor information
+        constructor_info(constructorObject);
+        //get field information
+        field_info(fieldObject, obj, recursive);
+    }
+
+    //Get interface name
+    public void interface_info(Class<?>[] interfaceClass)
+    {
         if(interfaceClass.length > 0)
         {
             for(Class<?> interfaces : interfaceClass)
             {
                 System.out.println("Interface Name: " + interfaces.getName() + "\n");
             }
-        }
+        } 
+    }
 
-        if(methodObjects.length > 0)
+    //Gets methods parameter types, exceptions, name and return type
+    public void method_info(Method[] methodObjects)
+    {
+    if(methodObjects.length > 0)
         {
             System.out.println("----------------------START OF METHODS-----------------------------------------------------");
             for(Method methods : methodObjects)
@@ -61,7 +80,11 @@ public class Inspector
             }
             System.out.println("-----------------------END OF METHODS----------------------------------------------------");
         }
+    }
 
+    //Gets constructor modifiers, name and parameter types
+    public void constructor_info(Constructor<?>[] constructorObject)
+    {
         if(constructorObject.length > 0)
         {
             System.out.println("---------------------START OF CONSTRUCTORS------------------------------------------------------");
@@ -87,6 +110,11 @@ public class Inspector
              System.out.println("-----------------------END OF CONSTRUCTORS----------------------------------------------------");
         }
 
+    }
+
+    //Gets fields modifiers, name, type and value
+    public void field_info(Field[] fieldObject, Object obj,  Boolean recursive) throws IllegalArgumentException, IllegalAccessException
+    {
         if(fieldObject.length > 0)
         {
             System.out.println("--------------------------START OF FIELDS-------------------------------------------------");
@@ -124,8 +152,7 @@ public class Inspector
                         System.out.println("--------------------------END OF FIELDS-------------------------------------------------");
                         inspect(fields.get(obj), recursive);
                      }
-                }
-                
+                } 
             }
         }
     }
